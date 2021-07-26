@@ -1,0 +1,15 @@
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\bin\Debug\SqlBaglantiUyg.exe.config
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\bin\Debug\SqlBaglantiUyg.exe
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\bin\Debug\SqlBaglantiUyg.pdb
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.Properties.Resources.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.csproj.GenerateResource.cache
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.csproj.CoreCompileInputs.cache
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.exe
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.pdb
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmLogin.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmOgrenci.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmSifreDegisim.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmAnaMenu.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmKullanicilar.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.csprojAssemblyReference.cache
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmStok.resources
