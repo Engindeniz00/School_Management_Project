@@ -46,11 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeTextColor.cs" />
+    <Compile Include="EAN13Class.cs" />
     <Compile Include="FrmAnaMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmAnaMenu.Designer.cs">
       <DependentUpon>FrmAnaMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBarcodeGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBarcodeGenerator.Designer.cs">
+      <DependentUpon>FrmBarcodeGenerator.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmKullanicilar.cs">
       <SubType>Form</SubType>
@@ -88,6 +96,9 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="FrmAnaMenu.resx">
       <DependentUpon>FrmAnaMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBarcodeGenerator.resx">
+      <DependentUpon>FrmBarcodeGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmKullanicilar.resx">
       <DependentUpon>FrmKullanicilar.cs</DependentUpon>

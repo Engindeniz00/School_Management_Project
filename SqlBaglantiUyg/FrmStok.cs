@@ -17,7 +17,7 @@ namespace SqlBaglantiUyg
         {
             InitializeComponent();
         }
-        SqlConnection baglanti = new SqlConnection("Data Source=DESKTOP-7SDHT04;Initial Catalog=OGRENCIYONETIMSISTEMI;Integrated Security=True");
+        //SqlConnection baglanti = new SqlConnection("Data Source=DESKTOP-7SDHT04;Initial Catalog=OGRENCIYONETIMSISTEMI;Integrated Security=True");
 
         private void FrmStok_Load(object sender, EventArgs e)
         {
@@ -28,14 +28,8 @@ namespace SqlBaglantiUyg
 
         private void VerileriGosterStok()
         {
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
-            sqlDataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Stok",baglanti);
-            DataTable dtStok = new DataTable();
-            sqlDataAdapter.Fill(dtStok);
-
-            if (baglanti.State == ConnectionState.Closed)
-                baglanti.Open();
-            
+            DataTable dtStok = Utils.TabloGetir("SELECT * FROM Stok");
+             
             if(dtStok !=null && dtStok.Rows.Count > 0)
             {
                 stokListe.Items.Clear();
@@ -58,15 +52,12 @@ namespace SqlBaglantiUyg
             {
                 stokListe.Items.Clear();
             }
-
-
-            if (baglanti.State == ConnectionState.Open)
-                baglanti.Close();
+             
         }
 
         private void kaydetButon_Click(object sender, EventArgs e)
         {
-            SqlCommand sqlCommand=null;
+            string sorgu="";
             if (stokKodText.Text != "" && stokAdiText.Text != "" && birimKomBox.Text != "" && barkodText.Text != "" && stokMiktariText.Text != "" && alisNumeric.Value > 0 && satisNumeric.Value > 0)
             {
                 if (barkodText.Text.Length < 13)
@@ -78,39 +69,31 @@ namespace SqlBaglantiUyg
                 {
                     if (Utils.StokItemId > 0)
                     {
-                        sqlCommand = new SqlCommand("UPDATE Stok SET StokKodu=@_stokKodu,StokAdi=@_stokAdi,Birim=@_birim,Barkod=@_barkod,StokMiktari=@_stokMiktari,AlisFiyati=@_alisFiyati,SatisFiyati=@_satisFiyati WHERE Id = @_id",baglanti);
-                        sqlCommand.Parameters.AddWithValue("@_id", Utils.StokItemId);
-
+                        sorgu = string.Format(@"UPDATE Stok SET StokKodu=@_stokKodu,StokAdi=@_stokAdi,Birim=@_birim,Barkod=@_barkod,StokMiktari=@_stokMiktari,AlisFiyati=@_alisFiyati,SatisFiyati=@_satisFiyati WHERE Id = {0}", Utils.StokItemId);
                     }
                     else
                     {
-                        sqlCommand = new SqlCommand("INSERT INTO Stok (StokKodu,StokAdi,Birim,Barkod,StokMiktari,AlisFiyati,SatisFiyati) VALUES (@_stokKodu,@_stokAdi,@_birim,@_barkod,@_stokMiktari,@_alisFiyati,@_satisFiyati)", baglanti);
+                        sorgu = string.Format(@"INSERT INTO Stok (StokKodu,StokAdi,Birim,Barkod,StokMiktari,AlisFiyati,SatisFiyati) VALUES ('{0}','{1}','{2}','{3}','{4}',{5},{6})",stokKodText.Text,stokAdiText.Text,birimKomBox.Text,barkodText.Text,stokMiktariText.Text,(float)alisNumeric.Value,(float)satisNumeric.Value);
                     }
-                }              
-                    
-                sqlCommand.Parameters.AddWithValue("@_stokKodu", stokKodText.Text);
-                sqlCommand.Parameters.AddWithValue("@_stokAdi", stokAdiText.Text);
-                sqlCommand.Parameters.AddWithValue("@_birim", birimKomBox.Text);
-                sqlCommand.Parameters.AddWithValue("@_barkod", barkodText.Text);
-                sqlCommand.Parameters.AddWithValue("@_stokMiktari", stokMiktariText.Text);
-                sqlCommand.Parameters.AddWithValue("@_alisFiyati", (float)alisNumeric.Value);
-                sqlCommand.Parameters.AddWithValue("@_satisFiyati", (float)satisNumeric.Value);
+                }
 
-                    
-                if (baglanti.State == ConnectionState.Closed)
-                    baglanti.Open();
-                sqlCommand.ExecuteNonQuery();
-                if (baglanti.State == ConnectionState.Open)
-                    baglanti.Close();
+            }           
 
-            }
-           
             else
             {
                 MessageBox.Show("Lütfen ürün bilgilerini tam doldurunuz!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            
+
+            if (Utils.SorguCalistir(sorgu))
+            {
+                MessageBox.Show("İşleminiz tamamlandı.", "Olumlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("HATA!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             VerileriGosterStok();
             Temizle();
         }
@@ -135,8 +118,8 @@ namespace SqlBaglantiUyg
             {
                 foreach(ListViewItem item in stokListe.CheckedItems)
                 {
-                    sqlCommand = new SqlCommand("DELETE FROM Stok WHERE Id = @_id",baglanti);
-                    sqlCommand.Parameters.AddWithValue("@_id", Convert.ToInt32(item.SubItems[0].Text));
+                    //sqlCommand = new SqlCommand("DELETE FROM Stok WHERE Id = @_id",Utils.baglantiOlustur);
+                    //sqlCommand.Parameters.AddWithValue("@_id", Convert.ToInt32(item.SubItems[0].Text));
                 }
             }
             else
@@ -144,11 +127,11 @@ namespace SqlBaglantiUyg
                 MessageBox.Show("Lütfen Silmek İstediğiniz Ürünü Seçiniz!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (baglanti.State == ConnectionState.Closed)
-                baglanti.Open();
-            sqlCommand.ExecuteNonQuery();
-            if (baglanti.State == ConnectionState.Open)
-                baglanti.Close();
+            //if (Utils.baglantiOlustur.State == ConnectionState.Closed)
+            //    Utils.baglantiOlustur.Open();
+            //sqlCommand.ExecuteNonQuery();
+            //if (Utils.baglantiOlustur.State == ConnectionState.Open)
+            //    Utils.baglantiOlustur.Close();
             VerileriGosterStok();
         }
 
@@ -174,6 +157,35 @@ namespace SqlBaglantiUyg
         private void temizleButon_Click(object sender, EventArgs e)
         {
             FrmStok_Load(sender,e);
+        }
+
+
+        // burada barkodumuzu üretiyoruz
+        private void BarkodUret()
+        {
+            string Barrcode, Check12Digits;
+            string uretilenBarkod = "";
+            Check12Digits =  Utils.KarakterUret();
+            Barrcode = EAN13Class.EAN13(Check12Digits);
+
+            // burayı barkodumuzu görselleştirmek için kullanıyoruz. Ama şu an ihtiyacımız yoks
+            //barkodText.Text = Barrcode;
+
+            if (!string.Equals(EAN13Class.Barcode13Digits, "") || (EAN13Class.Barcode13Digits != ""))
+            {
+                uretilenBarkod = EAN13Class.Barcode13Digits.ToString();
+            }
+
+            barkodText.Text = uretilenBarkod;
+
+        }
+
+        
+        // stok kod text box'ından ayrılır ayrılmaz kodu üretsin
+        private void stokKodText_Leave(object sender, EventArgs e)
+        {
+            BarkodUret();
+
         }
     }
 }

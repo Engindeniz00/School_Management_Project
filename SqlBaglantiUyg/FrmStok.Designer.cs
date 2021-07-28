@@ -89,6 +89,7 @@ namespace SqlBaglantiUyg
             this.stokMiktar,
             this.alisFiyati,
             this.satisFiyat});
+            this.stokListe.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.stokListe.FullRowSelect = true;
             this.stokListe.GridLines = true;
             this.stokListe.HideSelection = false;
@@ -103,7 +104,7 @@ namespace SqlBaglantiUyg
             // stokId
             // 
             this.stokId.Text = "";
-            this.stokId.Width = 23;
+            this.stokId.Width = 32;
             // 
             // stokKod
             // 
@@ -133,19 +134,19 @@ namespace SqlBaglantiUyg
             // 
             this.stokMiktar.Text = "Stok Miktarı";
             this.stokMiktar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.stokMiktar.Width = 100;
+            this.stokMiktar.Width = 155;
             // 
             // alisFiyati
             // 
             this.alisFiyati.Text = "Alış Fiyatı";
             this.alisFiyati.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.alisFiyati.Width = 100;
+            this.alisFiyati.Width = 112;
             // 
             // satisFiyat
             // 
             this.satisFiyat.Text = "Satış Fiyat";
             this.satisFiyat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.satisFiyat.Width = 100;
+            this.satisFiyat.Width = 112;
             // 
             // kaydetButon
             // 
@@ -256,6 +257,7 @@ namespace SqlBaglantiUyg
             this.stokKodText.Name = "stokKodText";
             this.stokKodText.Size = new System.Drawing.Size(174, 38);
             this.stokKodText.TabIndex = 12;
+            this.stokKodText.Leave += new System.EventHandler(this.stokKodText_Leave);
             // 
             // stokAdiText
             // 
@@ -286,7 +288,8 @@ namespace SqlBaglantiUyg
             this.barkodText.Location = new System.Drawing.Point(507, 151);
             this.barkodText.MaxLength = 13;
             this.barkodText.Name = "barkodText";
-            this.barkodText.Size = new System.Drawing.Size(183, 38);
+            this.barkodText.ReadOnly = true;
+            this.barkodText.Size = new System.Drawing.Size(398, 38);
             this.barkodText.TabIndex = 15;
             // 
             // stokMiktariText
@@ -299,6 +302,7 @@ namespace SqlBaglantiUyg
             // 
             // alisNumeric
             // 
+            this.alisNumeric.DecimalPlaces = 2;
             this.alisNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.alisNumeric.Location = new System.Drawing.Point(1308, 108);
             this.alisNumeric.Name = "alisNumeric";
@@ -307,8 +311,14 @@ namespace SqlBaglantiUyg
             // 
             // satisNumeric
             // 
+            this.satisNumeric.DecimalPlaces = 2;
             this.satisNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.satisNumeric.Location = new System.Drawing.Point(1308, 152);
+            this.satisNumeric.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.satisNumeric.Name = "satisNumeric";
             this.satisNumeric.Size = new System.Drawing.Size(120, 38);
             this.satisNumeric.TabIndex = 20;

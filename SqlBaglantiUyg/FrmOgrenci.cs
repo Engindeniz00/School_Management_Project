@@ -23,7 +23,7 @@ namespace SqlBaglantiUyg
 
         double ortalama = 0;
         // burada standart sql bağlantımızı sağladık
-        SqlConnection baglanti = new SqlConnection("Data Source=DESKTOP-7SDHT04;Initial Catalog=OGRENCIYONETIMSISTEMI;Integrated Security=True");
+       
         int KayitId = 0;
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -38,9 +38,9 @@ namespace SqlBaglantiUyg
 
         private void VerileriGoster(string kriter)
         {
-
-            DataTable dtTable = new DataTable();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+            string sorgu;
+            //DataTable dtTable = new DataTable();
+            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
             if (kriter.Length >= 3)
             {
                 // burada adi ve soyadini birlikte aldık ve ayrıca arama kutusundaki stringi içeren her veriyi çekme komutu verdik.
@@ -49,40 +49,55 @@ namespace SqlBaglantiUyg
                 /*** SQL SORGUSUNUN ÖNEMİ ***/
                 // burada görüleceği üzere sql sorgularında biri olan join komutlarını kullanarak
                 // iki tablo arasında Id bağlantası kurarak verileri tabloya dökebiliyoruz
-                sqlDataAdapter.SelectCommand = new SqlCommand(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, Kl.KullaniciAdi as
+                sorgu = string.Format(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, Kl.KullaniciAdi as
                     KaydedenKullaniciAdi, Kl1.KullaniciAdi as DegistirenKullaniciAdi 
                     FROM Ogrenciler AS Ogr
                     INNER JOIN Kullanicilar as Kl on Kl.Id=Ogr.Kaydeden
                     LEFT JOIN Kullanicilar as Kl1 on Kl1.Id=Ogr.Degistiren
-                    WHERE Ogr.Adi + ' ' + Ogr.Soyadi like @kriter");
+                    WHERE Ogr.Adi + ' ' + Ogr.Soyadi like '{0}' ","%"+kriter+"%");
+                //sqlDataAdapter.SelectCommand = new SqlCommand(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, Kl.KullaniciAdi as
+                //    KaydedenKullaniciAdi, Kl1.KullaniciAdi as DegistirenKullaniciAdi 
+                //    FROM Ogrenciler AS Ogr
+                //    INNER JOIN Kullanicilar as Kl on Kl.Id=Ogr.Kaydeden
+                //    LEFT JOIN Kullanicilar as Kl1 on Kl1.Id=Ogr.Degistiren
+                //    WHERE Ogr.Adi + ' ' + Ogr.Soyadi like @kriter");
 
                 // önemli bilgi : eğer %example% şeklinde ise herhangi değeri example değeri ile eşleşenlerin hepsini çağırır
                 // eğer example% şeklinde ise listeden example ile başlayanları çağırır
-                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@kriter", "%" + kriter + "%");
+                //sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@kriter", "%" + kriter + "%");
             }
             else
             {
-                sqlDataAdapter.SelectCommand = new SqlCommand(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, 
-                    Kl.KullaniciAdi as KaydedenKullaniciAdi, Kl1.KullaniciAdi as DegistirenKullaniciAdi 
-                    FROM Ogrenciler AS Ogr
-                    INNER JOIN Kullanicilar as Kl on Kl.Id=Ogr.Kaydeden
-                    LEFT JOIN Kullanicilar as Kl1 on Kl1.Id=Ogr.Degistiren");
+                sorgu = string.Format(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, 
+                   Kl.KullaniciAdi as KaydedenKullaniciAdi, Kl1.KullaniciAdi as DegistirenKullaniciAdi 
+                   FROM Ogrenciler AS Ogr
+                   INNER JOIN Kullanicilar as Kl on Kl.Id=Ogr.Kaydeden
+                   LEFT JOIN Kullanicilar as Kl1 on Kl1.Id=Ogr.Degistiren");
+
+                //sqlDataAdapter.SelectCommand = new SqlCommand(@"SELECT Ogr.Adi+' '+Ogr.Soyadi as AdiSoyadi, Ogr.*, 
+                //    Kl.KullaniciAdi as KaydedenKullaniciAdi, Kl1.KullaniciAdi as DegistirenKullaniciAdi 
+                //    FROM Ogrenciler AS Ogr
+                //    INNER JOIN Kullanicilar as Kl on Kl.Id=Ogr.Kaydeden
+                //    LEFT JOIN Kullanicilar as Kl1 on Kl1.Id=Ogr.Degistiren");
             }
 
             // normalde derlerde komut ve conneciton verilerini new SqlConnection("Sql Komutu",baglanti) olarak kullanırdık ama şimdi ise
             // bunları ayrı ayrı kullandık peki neden böyle bir şey yaptık sedat abiye sor. Buradan itibaren sql ile bağlantı kurup
             // üzerinde yazdığımız komutları uyguluyabiliyoruz.
-            sqlDataAdapter.SelectCommand.Connection = new SqlConnection(baglanti.ConnectionString);
-            
+            // sqlDataAdapter.SelectCommand.Connection = new SqlConnection(baglanti.ConnectionString);
+
+
+            DataTable dtTable = new DataTable();
+
+            dtTable = Utils.TabloGetir(sorgu);
             
             // eğer bağlantı kapalıysa aç, açıksa direk geç
-            if (baglanti.State == ConnectionState.Closed)
-            {
-                baglanti.Open();
-            }
+            //if (baglanti.State == ConnectionState.Closed)
+            //{
+            //    baglanti.Open();
+            //}
 
-            //BURADA HATA ALDIN DÜZELT BURAYI 
-            sqlDataAdapter.Fill(dtTable);
+            //sqlDataAdapter.Fill(dtTable);
 
             // ********** ÇOK ÖNEMLİ BİLGİLER ***********
             // burada sql tablomuzdan çektiğimiz verileri listView1 tablomuzun içersine aktardık
@@ -111,20 +126,9 @@ namespace SqlBaglantiUyg
                 if (AraKutu.Text.Length >= 3)
                 {
                     CheckEdici();
-                }
-
-                
+                }                
             }
-            else
-            {
-                // eğer sql verilerimiz boş ise listView1 tablomuzu boş göstersin
-                listView1.Items.Clear();
-            }
-
-            if (baglanti.State == ConnectionState.Open)
-            {
-                baglanti.Close();
-            }
+            
         }
 
 
@@ -169,50 +173,33 @@ namespace SqlBaglantiUyg
             {
                 MessageBox.Show("Lütfen Öğrencinin Bilgilerini Tam Giriniz");
             }
+
+            // burada string.Format() kullanarak parameters.AddWithValue() kullanmamıza gerek kalmadı. 
             else
             {
-                if (baglanti.State == ConnectionState.Closed)
-                {
-                    baglanti.Open();
-                }
 
-                SqlCommand sqlCommand;
+                string sorgu = "";
                 
+
                 if (KayitId > 0)
                 {
-                    sqlCommand = new SqlCommand(@"UPDATE Ogrenciler SET OgrenciNo=@OgrenciNo, Adi=@Adi, Soyadi=@Soyadi,  
-                                            DogumTarihi=@DogumTarihi, Cinsiyet=@Cinsiyet, Sube=@Sube ,Notlar=@Notlar,Degistiren=@Degistiren WHERE Id = @Id", baglanti);
-                    sqlCommand.Parameters.AddWithValue("@Id", KayitId);
-                    sqlCommand.Parameters.AddWithValue("@Degistiren",Utils.KullaniciId);
-                    
-                  
+                    sorgu = string.Format(@"UPDATE Ogrenciler SET OgrenciNo='{0}', Adi='{1}', Soyadi='{2}',  
+                                            DogumTarihi='{3}', Cinsiyet='{4}', Sube='{5}',Notlar='{6}',Degistiren={7} WHERE Id = {8}",
+                                            NumaraKutu.Text, AdKutu.Text, SoyadKutu.Text, dateTimePicker1.Value.ToString("yyyy-MM-gg"), CinsiyetComboBox.Text, SubeComboBox.Text, NotTextBox.Text, Utils.KullaniciId, KayitId);
                 }
                 else
                 {
-                    sqlCommand = new SqlCommand(@"INSERT INTO Ogrenciler (OgrenciNo, Adi, Soyadi, DogumTarihi, Cinsiyet, Sube, Notlar,Kaydeden)
-                                            VALUES (@OgrenciNo, @Adi,  @Soyadi,  @DogumTarihi,  @Cinsiyet,  @Sube, @Notlar,@Kaydeden)", baglanti);
-
-                    sqlCommand.Parameters.AddWithValue("@Kaydeden",Utils.KullaniciId);
+                   sorgu = string.Format(@"INSERT INTO Ogrenciler (OgrenciNo, Adi, Soyadi, DogumTarihi, Cinsiyet, Sube, Notlar,Kaydeden)
+                                            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', {7})",NumaraKutu.Text,AdKutu.Text,SoyadKutu.Text,dateTimePicker1.Value.ToString("yyyy-MM-gg"),CinsiyetComboBox.Text, SubeComboBox.Text,NotTextBox.Text,Utils.KullaniciId);                  
 
                 }
-                sqlCommand.Parameters.AddWithValue("@OgrenciNo", NumaraKutu.Text);
-                sqlCommand.Parameters.AddWithValue("@Adi", AdKutu.Text);
-                sqlCommand.Parameters.AddWithValue("@Soyadi", SoyadKutu.Text);
-                sqlCommand.Parameters.AddWithValue("@DogumTarihi", dateTimePicker1.Value.Date);
-                sqlCommand.Parameters.AddWithValue("@Cinsiyet", CinsiyetComboBox.Text);
-                sqlCommand.Parameters.AddWithValue("@Sube", SubeComboBox.Text);
-                sqlCommand.Parameters.AddWithValue("@Notlar", NotTextBox.Text);
 
+                Utils.SorguCalistir(sorgu);
                 
 
                 // sql tablomuzde update,insert,delete vs... gibi değişiklikler yaptığımız zaman muhakkak bu yaptığımız değişiklikleri
                 // sql tablomuz üzerinde güncelleyebilmek için sqlCommand.ExecuteNonQuery(); metodunu kullanmak zorundayız.
-                sqlCommand.ExecuteNonQuery();
-
-                if (baglanti.State == ConnectionState.Open)
-                {
-                    baglanti.Close();
-                }
+     
 
                 // her kaydet butonuna bastığımız zaman bütün listView1 üzerindeki tablo verilerini göstersin ve tüm textBoxlardik yazılı olanları temizlesin.
                 VerileriGoster("");
@@ -223,6 +210,7 @@ namespace SqlBaglantiUyg
 
         private void SilButon_Click(object sender, EventArgs e)
         {
+            string sorgu;
             // burada ise tiklenmiş kutucuklardaki verileri siliyoruz
             if (listView1.CheckedItems.Count > 0)
             {
@@ -231,18 +219,9 @@ namespace SqlBaglantiUyg
                     if (listView1.Items[i].Checked)
                     {
                         int Id = Convert.ToInt32(listView1.Items[i].SubItems[0].Text);
-                        SqlCommand sqlCommand = new SqlCommand("DELETE FROM Ogrenciler WHERE Id=@id", baglanti);
-                        sqlCommand.Parameters.AddWithValue("@id", Id);
-                        if (baglanti.State == ConnectionState.Closed)
-                        {
-                            baglanti.Open();
-                        }
-                        sqlCommand.ExecuteNonQuery();
-
-                        if (baglanti.State == ConnectionState.Open)
-                        {
-                            baglanti.Close();
-                        }
+                        //SqlCommand sqlCommand = new SqlCommand("DELETE FROM Ogrenciler WHERE Id=@id", baglanti);
+                        sorgu = string.Format("DELETE FROM Ogrenciler WHERE Id={0}", Id);
+                        Utils.SorguCalistir(sorgu);
                     }
                 }
                 VerileriGoster("");
@@ -255,25 +234,7 @@ namespace SqlBaglantiUyg
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-            // BURADA YİNE BİR ŞEYLER DENEMİŞİM AMA OLMAMIŞ :P
-
-            foreach (ListViewItem secilibilgi in listView1.CheckedItems)
-            {
-                SqlCommand secili_sil = new SqlCommand("Delete from Ogrenciler where OgrenciNo = @no", baglanti);
-                string no = secilibilgi.SubItems[0].Text;
-                secili_sil.Parameters.AddWithValue("@no", no);
-                if (baglanti.State == ConnectionState.Closed)
-                    baglanti.Open();
-                secili_sil.ExecuteNonQuery();
-                if (baglanti.State == ConnectionState.Open)
-                    baglanti.Close();
-            }
-
-
-        }
+        
 
         private void button1_Click_1(object sender, EventArgs e)
         {

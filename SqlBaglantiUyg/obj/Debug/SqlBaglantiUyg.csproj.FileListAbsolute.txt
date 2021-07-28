@@ -11,5 +11,6 @@ C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglanti
 C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmSifreDegisim.resources
 C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmAnaMenu.resources
 C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmKullanicilar.resources
-C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.csprojAssemblyReference.cache
 C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmStok.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.FrmBarcodeGenerator.resources
+C:\Users\Angel Diesel\Desktop\Staj\Staj Alıştırma\EğitimAmaçlı\SqlBaglantiEgitimUygulamalari\SqlBaglantiUyg\obj\Debug\SqlBaglantiUyg.csprojAssemblyReference.cache

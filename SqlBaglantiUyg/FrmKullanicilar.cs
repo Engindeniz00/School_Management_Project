@@ -28,11 +28,9 @@ namespace SqlBaglantiUyg
 
         private void VerileriGoster()
         {
-            if (baglanti.State == ConnectionState.Closed)
-                baglanti.Open();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT * FROM Kullanicilar", baglanti);          
+            string sorgu = "SELECT * FROM Kullanicilar";
             DataTable dtKullanici = new DataTable();
-            sqlDataAdapter.Fill(dtKullanici);
+            dtKullanici = Utils.TabloGetir(sorgu);
             if(dtKullanici!=null && dtKullanici.Rows.Count>0)
             {
                 kullaniciListe.Items.Clear();
@@ -57,9 +55,7 @@ namespace SqlBaglantiUyg
             {
                 kullaniciListe.Clear();
             }
-
-            if (baglanti.State == ConnectionState.Open)
-                baglanti.Close();
+ 
 
         }
 
@@ -82,16 +78,13 @@ namespace SqlBaglantiUyg
 
         private void kaydetButon_Click(object sender, EventArgs e)
         {
+            string sorgu = "";
             _kullaniciAdi = kullaniciTextBox.Text;
             if (kullaniciTextBox.Text !="")
             {
-                SqlCommand sqlCommand=null;
                 if (Utils.KullaniciDegisimId > 0)
                 {
-                     sqlCommand= new SqlCommand("UPDATE Kullanicilar SET KullaniciAdi=@_kullaniciAdi,Sifre=@_sifre WHERE Id=@Id", baglanti);
-                    sqlCommand.Parameters.AddWithValue("@Id", Utils.KullaniciDegisimId);
-                    sqlCommand.Parameters.AddWithValue("@_kullaniciAdi", kullaniciTextBox.Text);
-                    sqlCommand.Parameters.AddWithValue("@_sifre", sifreTextBox.Text);
+                    sorgu = string.Format("UPDATE Kullanicilar SET KullaniciAdi='{0}',Sifre='{1}' WHERE Id={2}", kullaniciTextBox.Text, sifreTextBox.Text, Utils.KullaniciDegisimId);                     
                     MessageBox.Show("Kullanıcı başarılı bir şekilde güncellendi.", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -100,9 +93,7 @@ namespace SqlBaglantiUyg
                     {
                         if (KontrolKayit(_kullaniciAdi))
                         {
-                            sqlCommand = new SqlCommand("INSERT INTO Kullanicilar (KullaniciAdi,Sifre,Aktif) VALUES(@_kullaniciAdi,@_sifre,1)", baglanti);
-                            sqlCommand.Parameters.AddWithValue("@_kullaniciAdi", kullaniciTextBox.Text);
-                            sqlCommand.Parameters.AddWithValue("@_sifre", sifreTextBox.Text);
+                            sorgu = string.Format("INSERT INTO Kullanicilar(KullaniciAdi, Sifre, Aktif) VALUES({0},{1}, 1)", kullaniciTextBox.Text, sifreTextBox.Text);                            
                             MessageBox.Show("Yeni kullanıcı başarılı bir şekilde eklendi", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
@@ -119,21 +110,21 @@ namespace SqlBaglantiUyg
                         return;
                     }
                 }
-                if (baglanti.State == ConnectionState.Closed)
-                    baglanti.Open();
-                sqlCommand.ExecuteNonQuery();
-                if (baglanti.State == ConnectionState.Open)
-                    baglanti.Close();
             }
             else
             {
                 MessageBox.Show("Kullanıcı Seçilmedi", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            Utils.SorguCalistir(sorgu);
+
             VerileriTemizle();
             VerileriGoster();
                 
         }
 
+
+        // kayıt kontrolü yapıyoruz
         private bool KontrolKayit(string _text)
         {
             bool kont = true;
@@ -174,23 +165,19 @@ namespace SqlBaglantiUyg
 
         private void silButon_Click(object sender, EventArgs e)
         {
-            
+            string sorgu = "";
             if (kullaniciListe.CheckedItems.Count > 0)
             {
                 foreach (ListViewItem item in kullaniciListe.CheckedItems)
                 {
-                    if(item.SubItems[0].Text == "1014")
+                    if (item.SubItems[0].Text == "1014")
                     {
-                        MessageBox.Show("Admin Silinemez!","Uyarı",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                        MessageBox.Show("Admin Silinemez!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    SqlCommand sqlCommand = new SqlCommand("DELETE FROM Kullanicilar WHERE Id=@_Id", baglanti);
-                    sqlCommand.Parameters.AddWithValue("@_Id", Convert.ToInt32(item.SubItems[0].Text));                   
-                    if (baglanti.State == ConnectionState.Closed)
-                        baglanti.Open();
-                    sqlCommand.ExecuteNonQuery();
-                    if (baglanti.State == ConnectionState.Open)
-                        baglanti.Close();
+                    sorgu = string.Format("DELETE FROM Kullanicilar WHERE Id={0}", Convert.ToInt32(item.SubItems[0].Text));
+
+                    Utils.SorguCalistir(sorgu);
                 }
             }
             else
@@ -202,6 +189,7 @@ namespace SqlBaglantiUyg
 
         private void aktPsfButon_Click(object sender, EventArgs e)
         {
+            string sorgu="";
             SqlCommand sqlCommand = null;
             if (kullaniciListe.CheckedItems.Count > 0)
             {
@@ -209,18 +197,14 @@ namespace SqlBaglantiUyg
                 {
                     if(item.SubItems[3].Text == "Aktif")
                     {
-                        sqlCommand = new SqlCommand("UPDATE Kullanicilar SET Aktif=0 WHERE Id=@_Id", baglanti);
+                        sorgu = string.Format("UPDATE Kullanicilar SET Aktif=0 WHERE Id={0}", Convert.ToInt32(item.SubItems[0].Text));
                     }
                     else
                     {
-                        sqlCommand = new SqlCommand("UPDATE Kullanicilar SET Aktif=1 WHERE Id=@_Id", baglanti);
+                        sorgu = string.Format("UPDATE Kullanicilar SET Aktif=1 WHERE Id={0}", Convert.ToInt32(item.SubItems[0].Text));
+
                     }
-                    sqlCommand.Parameters.AddWithValue("@_Id", Convert.ToInt32(item.SubItems[0].Text));
-                    if (baglanti.State == ConnectionState.Closed)
-                        baglanti.Open();
-                    sqlCommand.ExecuteNonQuery();
-                    if (baglanti.State == ConnectionState.Open)
-                        baglanti.Close();
+                    Utils.SorguCalistir(sorgu);
                 }
             }
             else
